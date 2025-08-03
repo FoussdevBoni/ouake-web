@@ -1,0 +1,1 @@
+export const WP_API = `https://primeconnect2.com/wp-json/wp/v2`
