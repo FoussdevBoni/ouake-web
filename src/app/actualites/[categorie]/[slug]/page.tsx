@@ -4,18 +4,11 @@ import SEO from '@/components/ui/SEO';
 import { getPostBySlug } from '@/functions/wpPosts';
 import { decodeHtml } from '@/functions/decodeHtml';
 import { notFound } from 'next/navigation';
+import { Metadata } from 'next';
 
-
-interface PageProps {
-  params: {
-    slug: string;
-  };
-}
-
-
-export async function generateMetadata({ params }: PageProps) {
+export async function generateMetadata({ params }: { params: { slug: string; categorie: string } }): Promise<Metadata> {
   const post = await getPostBySlug(params.slug);
-  if (!post) return {};
+  if (!post) return { title: 'Article non trouvé', description: 'Cet article est introuvable.' };
 
   return {
     title: decodeHtml(post.title.rendered),
@@ -23,7 +16,7 @@ export async function generateMetadata({ params }: PageProps) {
   };
 }
 
-export default async function PostPage({ params }: PageProps) {
+export default async function PostPage({ params }: { params: { slug: string; categorie: string } }) {
   const post = await getPostBySlug(params.slug);
   if (!post) return notFound();
 
